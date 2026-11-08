@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprar</title>
+    <link rel="stylesheet" href="https://jsdelivr.net">
+</head>
+<body class="container mt-5" style="max-width: 450px;">
+    <div class="card shadow p-4">
+        <h3 th:text="'Boletos para ' + ${concierto.artista}"></h3>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        
+        <form th:action="@{/conciertos/comprar/procesar}" method="post" class="mt-3">
+            <input type="hidden" name="conciertoId" th:value="${concierto.id}" />
+            <div class="mb-3">
+                <label class="form-label">Sección:</label>
+                <select name="categoria" class="form-select" id="sel" onchange="calc()">
+                    <option value="GENERAL" data-p="50">General - $50</option>
+                    <option value="PREFERENTE" data-p="95">Preferente - $95</option>
+                    <option value="VIP" data-p="180">VIP - $180</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Cantidad:</label>
+                <input type="number" name="cantidad" id="cant" class="form-control" value="1" min="1" oninput="calc()" required />
+            </div>
+            <h5 class="text-center alert alert-info">Total: $<span id="t">50</span></h5>
+            <button type="submit" class="btn btn-primary w-100" th:disabled="${concierto.boletosDisponibles <= 0}">Comprar</button>
+        </form>
+    </div>
+    <script>
+        function calc() {
+            var s = document.getElementById("sel");
+            var p = s.options[s.selectedIndex].getAttribute("data-p");
+            var c = document.getElementById("cant").value;
+            document.getElementById("t").innerText = p * (c ? c : 0);
+        }
+    </script>
+</body>
+</html>
