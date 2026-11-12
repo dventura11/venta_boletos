@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticketera</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <a th:href="@{/}" title="Inicio" class="d-inline-flex align-items-center text-decoration-none mb-3"><span style="font-size:1.8rem;">🎟️</span>&nbsp;<strong class="fs-4 text-dark">Ticketera</strong></a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🏟️ Recintos</h2>
+        <a th:href="@{/recintos/nuevo}" class="btn btn-success">➕ Nuevo recinto</a>
+    </div>
+    <table class="table table-hover align-middle shadow-sm bg-white rounded">
+        <thead class="table-light"><tr><th>🏟️ Nombre</th><th>📍 Ciudad</th><th>💺 Tipos de asiento</th><th>Acciones</th></tr></thead>
+        <tbody>
+            <tr th:each="r : ${recintos}">
+                <td class="fw-semibold" th:text="${r.nombre}"></td>
+                <td th:text="${r.ciudad}"></td>
+                <td>
+                    <span th:each="t : ${r.tiposAsiento}" class="badge rounded-pill bg-info-subtle text-info-emphasis border border-info-subtle me-1 mb-1"
+                          th:text="'💺 ' + ${t.nombre} + ' · 👥' + ${t.capacidad} + ' · 💲' + ${t.precioSugerido}"></span>
+                </td>
+                <td class="text-nowrap">
+                    <a th:href="@{/recintos/editar/{id}(id=${r.id})}" class="btn btn-sm btn-warning">✏️</a>
+                    <a th:href="@{/recintos/eliminar/{id}(id=${r.id})}" class="btn btn-sm btn-danger">🗑️</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
